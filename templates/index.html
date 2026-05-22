@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,33 +7,82 @@
     <title>Calculadora de Progresión Financiera</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <style>
+        /* Importamos la tipografía Diatype (usamos una alternativa premium de Google Fonts muy similar para que renderice perfecto) */
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        body {
+            /* Aplicamos la tipografía que pediste con la caída del sistema */
+            font-family: "Diatype", "Plus Jakarta Sans", var(--font-family-sans-serif), sans-serif;
+            background-color: #020617; /* Fondo azul oscuro profundo (Slate 950) */
+        }
+
+        /* Contenedor de partículas fijado al fondo */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-color: #020617;
+        }
+
+        /* Contenido por encima de las partículas */
+        .contenido-interfaz {
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .interactivo {
+            pointer-events: auto;
+        }
+
+        /* Estilo personalizado para las barras de scroll internas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen antialiased">
+
+    <div id="particles-js"></div>
+
+    <div class="contenido-interfaz container mx-auto px-4 py-8 max-w-5xl">
         <header class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-emerald-400 mb-2">📊 Progresión Financiera Compuesta</h1>
-            <p class="text-gray-400">Proyectá el crecimiento de tus trades aplicando interés compuesto</p>
+            <h1 class="text-4xl font-bold text-sky-400 mb-2 drop-shadow-lg tracking-tight">📊 Progresión Financiera Compuesta</h1>
+            <p class="text-slate-400">Proyectá el crecimiento de tus trades aplicando interés compuesto</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start max-w-5xl mx-auto">
             
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl lg:col-span-1">
-                <h2 class="text-xl font-semibold mb-4 text-gray-200">Simulación</h2>
+            <div class="interactivo bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-6 shadow-2xl lg:col-span-1">
+                <h2 class="text-xl font-semibold mb-4 text-slate-100 tracking-wide">Simulación</h2>
                 <form id="form-calculadora" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Capital Inicial ($)</label>
-                        <input type="number" id="capital" value="50" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-400 mb-1">Capital Inicial ($)</label>
+                        <input type="number" id="capital" value="50" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 transition">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Profit per Trade (%)</label>
-                        <input type="number" id="profit" value="10" step="0.1" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-400 mb-1">Profit per Trade (%)</label>
+                        <input type="number" id="profit" value="10" step="0.1" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 transition">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Cantidad de Trades</label>
-                        <input type="number" id="trades" value="10" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-400 mb-1">Cantidad de Trades</label>
+                        <input type="number" id="trades" value="10" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 transition">
                     </div>
-                    <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-bold py-2.5 px-4 rounded-lg transition duration-200 shadow-md">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 shadow-lg shadow-blue-500/20 cursor-pointer tracking-wide">
                         Calcular Progresión
                     </button>
                 </form>
@@ -40,26 +90,26 @@
 
             <div id="contenedor-resultados" class="hidden lg:col-span-2 space-y-8">
                 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl">
-                    <h2 class="text-xl font-semibold mb-4 text-emerald-400">📈 Curva de Crecimiento</h2>
+                <div class="interactivo bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-6 shadow-2xl">
+                    <h2 class="text-xl font-semibold mb-4 text-sky-400 tracking-wide">📈 Curva de Crecimiento</h2>
                     <div class="w-full h-64">
                         <canvas id="graficoProgresion"></canvas>
                     </div>
                 </div>
 
-                <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl overflow-hidden">
-                    <h2 class="text-xl font-semibold mb-4 text-emerald-400">📋 Historial de Progresión</h2>
+                <div class="interactivo bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-xl p-6 shadow-2xl overflow-hidden">
+                    <h2 class="text-xl font-semibold mb-4 text-sky-400 tracking-wide">📋 Historial de Progresión</h2>
                     <div class="overflow-x-auto max-h-60 overflow-y-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="border-b border-gray-800 text-gray-400 text-sm sticky top-0 bg-gray-900">
+                                <tr class="border-b border-slate-800 text-slate-400 text-sm sticky top-0 bg-slate-900">
                                     <th class="py-3 px-4">Trade #</th>
                                     <th class="py-3 px-4">B. Inicial</th>
                                     <th class="py-3 px-4">Profit ($)</th>
                                     <th class="py-3 px-4">B. Final</th>
                                 </tr>
                             </thead>
-                            <tbody id="cuerpo-tabla" class="divide-y divide-gray-800/50 text-sm">
+                            <tbody id="cuerpo-tabla" class="divide-y divide-slate-800/50 text-sm">
                                 </tbody>
                         </table>
                     </div>
@@ -70,7 +120,34 @@
     </div>
 
     <script>
-        let miGrafico = null; // Variable para controlar el gráfico y que no se duplique
+        // 1. INICIALIZAR EL FONDO DE PARTÍCULAS EN AZUL CIELO CLARO
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#38bdf8" }, /* Sky 400 (Azul cielo claro y brillante) */
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false }, /* Un toque más de opacidad para que se luzca */
+                "size": { "value": 2.5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#38bdf8", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 1.8, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } },
+                    "push": { "particles_nb": 3 }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // 2. LÓGICA DE LA CALCULADORA
+        let miGrafico = null;
 
         document.getElementById('form-calculadora').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -95,34 +172,28 @@
                 const cuerpoTabla = document.getElementById('cuerpo-tabla');
                 cuerpoTabla.innerHTML = '';
 
-                // Listas auxiliares para darle los datos al gráfico
                 const etiquetasTrades = [];
                 const datosBalances = [];
 
                 resultado.data.forEach(fila => {
-                    // 1. Llenamos la tabla
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-gray-800/30 transition';
+                    tr.className = 'hover:bg-slate-800/40 transition';
+                    // Renderizado de las celdas con degradados de azul para las ganancias
                     tr.innerHTML = `
-                        <td class="py-3 px-4 font-medium text-gray-400">${fila.trade}</td>
-                        <td class="py-3 px-4">$ ${fila.balance_inicial.toLocaleString('es-AR')}</td>
-                        <td class="py-3 px-4 text-emerald-400">+$ ${fila.profit.toLocaleString('es-AR')}</td>
-                        <td class="py-3 px-4 text-white font-semibold">$ ${fila.balance_final.toLocaleString('es-AR')}</td>
+                        <td class="py-3 px-4 font-medium text-slate-400">${fila.trade}</td>
+                        <td class="py-3 px-4 text-slate-300">$ ${fila.balance_inicial.toLocaleString('es-AR')}</td>
+                        <td class="py-3 px-4 text-sky-400 font-medium">+$ ${fila.profit.toLocaleString('es-AR')}</td>
+                        <td class="py-3 px-4 text-blue-300 font-semibold">$ ${fila.balance_final.toLocaleString('es-AR')}</td>
                     `;
                     cuerpoTabla.appendChild(tr);
 
-                    // 2. Guardamos datos para el gráfico
-                    etiquetasTrades.push(`Trade ${fila.trade}`);
+                    etiquetasTrades.push(`T ${fila.trade}`);
                     datosBalances.push(fila.balance_final);
                 });
 
-                // Mostrar el contenedor derecho
                 document.getElementById('contenedor-resultados').classList.remove('hidden');
 
-                // 3. RENDERIZAR O ACTUALIZAR EL GRÁFICO
                 const ctx = document.getElementById('graficoProgresion').getContext('2d');
-                
-                // Si el gráfico ya existía de un cálculo anterior, lo destruimos para dibujar el nuevo
                 if (miGrafico) { miGrafico.destroy(); }
 
                 miGrafico = new Chart(ctx, {
@@ -130,25 +201,24 @@
                     data: {
                         labels: etiquetasTrades,
                         datasets: [{
-                            label: 'Balance de la Cuenta ($)',
+                            label: 'Balance ($)',
                             data: datosBalances,
-                            borderColor: '#34d399', // Verde esmeralda
-                            backgroundColor: 'rgba(52, 211, 153, 0.1)', // Sombreado abajo de la línea
-                            borderWidth: 2,
-                            tension: 0.3, // Curvatura de la línea
-                            pointRadius: trades > 30 ? 0 : 3 // Esconde los puntitos si son demasiados trades
+                            borderColor: '#0284c7', // Azul Sky 600 para la línea del gráfico
+                            backgroundColor: 'rgba(56, 189, 248, 0.08)', // Relleno azul traslúcido abajo de la curva
+                            borderWidth: 2.5,
+                            tension: 0.25,
+                            pointRadius: trades > 30 ? 0 : 2.5,
+                            pointBackgroundColor: '#38bdf8'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
-                            x: { grid: { color: 'rgba(75, 85, 99, 0.1)' }, ticks: { color: '#9ca3af' } },
-                            y: { grid: { color: 'rgba(75, 85, 99, 0.1)' }, ticks: { color: '#9ca3af' } }
+                            x: { grid: { color: 'rgba(148, 163, 184, 0.05)' }, ticks: { color: '#94a3b8' } },
+                            y: { grid: { color: 'rgba(148, 163, 184, 0.05)' }, ticks: { color: '#94a3b8' } }
                         },
-                        plugins: {
-                            legend: { display: false } // Esconde etiquetas repetitivas
-                        }
+                        plugins: { legend: { display: false } }
                     }
                 });
             }
